@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='widgettest'>
+    <!-- Inherit the core Web Toolkit stuff.                        -->
+    <inherits name='com.google.gwt.user.User'/>
+
+    <inherits name="uk.ac.ebi.pwp.structures.quadtree.QuadTree2D"/>
+
+    <!-- Specify the app entry point class.                         -->
+    <entry-point class='uk.ac.ebi.pwp.structures.test.WidgetTest'/>
+
+    <!-- Specify the paths for translatable code                    -->
+    <source path='test'/>
+</module>
