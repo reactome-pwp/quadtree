@@ -10,6 +10,7 @@ import java.util.Set;
  */
 class QuadNode<T extends QuadTreeBox> {
     protected int numberOfItems;
+    protected int minArea;
     protected Box box;
 
     private boolean isLeaf = true;
@@ -21,13 +22,14 @@ class QuadNode<T extends QuadTreeBox> {
     private QuadNode<T> SE;
     private QuadNode<T> SW;
 
-    public QuadNode(Box dimensions, int numberOfItems) {
+    public QuadNode(Box dimensions, int numberOfItems, int minArea) {
         this.box = dimensions;
         this.numberOfItems = numberOfItems;
+        this.minArea = minArea;
     }
 
-    public QuadNode(double minX, double minY, double maxX, double maxY, int numberOfItems) {
-        this(new Box(minX, minY, maxX, maxY), numberOfItems);
+    public QuadNode(double minX, double minY, double maxX, double maxY, int numberOfItems, int maxDepth) {
+        this(new Box(minX, minY, maxX, maxY), numberOfItems, maxDepth);
     }
 
     boolean add(QuadItem<T> item) {
@@ -42,9 +44,13 @@ class QuadNode<T extends QuadTreeBox> {
                 return values.add(item);
             } else {
                 //There is not space so the node has to be broken down into nodes
-                this.createChildren();
-                //The current values have to be moved a level down
-                this.moveValuesDown();
+                if(this.createChildren()) {
+                    //The current values have to be moved a level down
+                    this.moveValuesDown();
+                }else{
+                    //When the current node cannot be split, the values are added to the content
+                    return values.add(item);
+                }
             }
         }
         //Time to add the new item into the corresponding nodes
@@ -125,22 +131,27 @@ class QuadNode<T extends QuadTreeBox> {
         return getItems(box);
     }
 
-    private void createChildren() {
-        if (!this.isLeaf) return;
+    /**
+     * Only creates children when the node is leaf and the area can be split. Check isValidArea method.
+     * @return returns true if the node has been broken (false otherwise)
+     */
+    private boolean createChildren() {
+        if (!isLeaf || !box.isValidArea(minArea)) return false;
 
-        double minX = this.box.getMinX();
-        double minY = this.box.getMinY();
-        double maxX = this.box.getMaxX();
-        double maxY = this.box.getMaxY();
-        double centreX = this.box.getCentreX();
-        double centreY = this.box.getCentreY();
+        double minX = box.getMinX();
+        double minY = box.getMinY();
+        double maxX = box.getMaxX();
+        double maxY = box.getMaxY();
+        double centreX = box.getCentreX();
+        double centreY = box.getCentreY();
 
-        this.NW = new QuadNode<>(minX, minY, centreX, centreY, this.numberOfItems);
-        this.NE = new QuadNode<>(centreX, minY, maxX, centreY, this.numberOfItems);
-        this.SE = new QuadNode<>(centreX, centreY, maxX, maxY, this.numberOfItems);
-        this.SW = new QuadNode<>(minX, centreY, centreX, maxY, this.numberOfItems);
+        NW = new QuadNode<>(minX, minY, centreX, centreY, numberOfItems, minArea);
+        NE = new QuadNode<>(centreX, minY, maxX, centreY, numberOfItems, minArea);
+        SE = new QuadNode<>(centreX, centreY, maxX, maxY, numberOfItems, minArea);
+        SW = new QuadNode<>(minX, centreY, centreX, maxY, numberOfItems, minArea);
 
-        this.isLeaf = false;
+        isLeaf = false;
+        return true;
     }
 
     private void mergeChildren() {
