@@ -41,6 +41,16 @@ public class Box implements QuadTreeBox {
                 quadTreeBox.getMaxY() < this.minY);
     }
 
+    public boolean isValidArea(double minArea) {
+        double width = maxX - minX;
+        double height = maxY - minY;
+        return width > 1.0 && height > 1.0 && Math.abs(width * height) >= minArea;
+    }
+
+    public double getArea() {
+        return (maxX - minX) * (maxY - minY);
+    }
+
     public double getCentreX() {
         return centreX;
     }
