@@ -26,7 +26,7 @@ public class WidgetTest implements EntryPoint {
     }
 
     private void test2() {
-        this.tree = new QuadTree<>(100, 100, 3);
+        this.tree = new QuadTree<>(100, 100, 3, 25);
         Box a = new Box(80, 90, 80, 90);
         Box b = new Box(80, 30, 90, 40);
         Box c = new Box(30, 80, 40, 90);
