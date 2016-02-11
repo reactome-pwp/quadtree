@@ -57,6 +57,17 @@ class QuadNode<T extends QuadTreeBox> {
         return this.addToAllNodes(item);
     }
 
+    void clear(){
+        if (this.isLeaf) {
+            values.clear();
+        } else {
+            NW.clear();
+            NE.clear();
+            SE.clear();
+            SW.clear();
+        }
+    }
+
     boolean remove(T item) {
         QuadItem<T> aux = new QuadItem<>(item);
         if (this.box == null || !aux.touches(this.box)) {

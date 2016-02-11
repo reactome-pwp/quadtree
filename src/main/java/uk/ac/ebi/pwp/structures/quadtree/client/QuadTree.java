@@ -29,8 +29,15 @@ public class QuadTree<T extends QuadTreeBox> {
         return root.add(new QuadItem<>(item));
     }
 
+    public void clear() {
+        root.clear();
+    }
     public boolean remove(T item){
         return root.remove(item);
+    }
+
+    public Set<T> getItems(){
+        return root.getItems();
     }
 
     public Set<T> getItems(double x, double y){

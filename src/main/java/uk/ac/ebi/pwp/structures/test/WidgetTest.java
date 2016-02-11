@@ -23,6 +23,12 @@ public class WidgetTest implements EntryPoint {
     public void onModuleLoad() {
         test1();
         test2();
+        test3();
+    }
+
+    private void test3() {
+        this.tree.clear();
+        System.out.println(this.tree.getItems().size() + " <-- should be 0");
     }
 
     private void test2() {
