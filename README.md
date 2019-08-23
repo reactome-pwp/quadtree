@@ -45,7 +45,7 @@ Then add the QuadTree dependency
     <dependency>
         <groupId>uk.ac.ebi.pwp.widgets</groupId>
         <artifactId>quadtree</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
     </dependency>
 <dependencies>
 ```    
