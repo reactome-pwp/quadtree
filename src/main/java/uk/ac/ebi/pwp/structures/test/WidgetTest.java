@@ -1,6 +1,7 @@
 package uk.ac.ebi.pwp.structures.test;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import uk.ac.ebi.pwp.structures.quadtree.client.Box;
 import uk.ac.ebi.pwp.structures.quadtree.client.QuadTree;
 import uk.ac.ebi.pwp.structures.quadtree.client.QuadTreeBox;
@@ -28,7 +29,7 @@ public class WidgetTest implements EntryPoint {
 
     private void test3() {
         this.tree.clear();
-        System.out.println(this.tree.getItems().size() + " <-- should be 0");
+        GWT.log(this.tree.getItems().size() + " <-- should be 0");
     }
 
     private void test2() {
@@ -68,7 +69,7 @@ public class WidgetTest implements EntryPoint {
 
     private void test1() {
         this.tree = new QuadTree<>(15000, 15000);
-        System.out.println("ELEMENTS: 20,000");
+        GWT.log("ELEMENTS: 20,000");
         for (int i = 0; i < 20000; i++) {
             Box x = new Box(i, i, i + 2, i + 2);
             this.list.add(x);
@@ -77,7 +78,7 @@ public class WidgetTest implements EntryPoint {
 
         Set<Box> set = new HashSet<>();
 
-        System.out.println("\tGET ITEMS BY POINT");
+        GWT.log("\tGET ITEMS BY POINT");
         long start = new Date().getTime();
         for (int i = 0; i < 1000; i++) {
             set = tree.getItems(15, 15);
@@ -95,10 +96,9 @@ public class WidgetTest implements EntryPoint {
         }
         end = new Date().getTime();
         report("List    ", set.size(), (end - start));
-        System.out.println();
 
 
-        System.out.println("\tGET ITEMS BY AREA");
+        GWT.log("\tGET ITEMS BY AREA");
         QuadTreeBox area = new Box(10, 10, 200, 200);
         start = new Date().getTime();
         for (int i = 0; i < 1000; i++) {
@@ -117,11 +117,9 @@ public class WidgetTest implements EntryPoint {
         }
         end = new Date().getTime();
         report("List    ", set.size(), (end - start));
-        System.out.println();
-        System.out.println();
     }
 
     private void report(String dataStructure, int targetNodes, double milliseconds) {
-        System.out.println("\t" + dataStructure + " -> Target nodes: " + targetNodes + " || Time: " + milliseconds + "ms");
+        GWT.log("\t" + dataStructure + " -> Target nodes: " + targetNodes + " || Time: " + milliseconds + "ms");
     }
 }
